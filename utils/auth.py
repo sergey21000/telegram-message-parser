@@ -26,7 +26,7 @@ class AuthState:
     message: str | None = None
     client: TelegramClient | None = None
 
-    def check_start_auth_status(self):
+    def check_start_auth_status(self) -> None:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.run_until_complete(self.check_is_auth())
@@ -38,7 +38,7 @@ class AuthState:
             if validation_result.is_valid:
                 self.set_auth_success()
 
-    def get_session(self):
+    def get_session(self) -> Session:
         if self.session_type == 'sqlite':
             return SQLiteSession(self.session_name)
         elif self.session_type == 'memory':
@@ -50,7 +50,7 @@ class AuthState:
         if session_type != self.session_type:
             self.session_type = session_type
 
-    def reset_state(self):
+    def reset_state(self) -> None:
         defaults = self.__class__()
         # self.__dict__.update(defaults.__dict__)
         self.is_auth = defaults.is_auth
@@ -60,41 +60,41 @@ class AuthState:
         self.message = defaults.message
         self.client = defaults.client
 
-    def _log(self):
+    def _log(self) -> None:
         if self.is_logging and self.message:
             logging.info(self.message)
 
-    def set_auth_failed(self, message: str | None = None):
+    def set_auth_failed(self, message: str | None = None) -> None:
         if message:
             self.message = message
         self._log()
 
-    def set_start_auth(self):
+    def set_start_auth(self) -> None:
         self.reset_state()
         self.message = 'Начата процедура аутентификации'
 
-    def set_client(self, client: TelegramClient):
+    def set_client(self, client: TelegramClient) -> None:
         self.client = client
         if self.session_type == 'memory':
             self.memory_session = client.session
 
-    def set_need_send_code(self):
+    def set_need_send_code(self) -> None:
         self.need_send_code = True
         self.message = 'Проверка соединения клиента завершена успешно. Отправка проверочного кода'
         self._log()
 
-    def set_need_verify_code(self):
+    def set_need_verify_code(self) -> None:
         self.need_verify_code = True
         self.message = 'Код отправлен в Telegram. Введите его в поле Проверочный код'
         self._log()
 
-    def set_need_verify_2fa(self):
+    def set_need_verify_2fa(self) -> None:
         self.need_verify_2fa = True
         self.need_verify_code = False
         self.message = 'Требуется 2FA-пароль. Введите его в поле Облачный пароль'
         self._log()
 
-    def set_auth_success(self, message: str | None = None):
+    def set_auth_success(self, message: str | None = None) -> None:
         self.is_auth = True
         self.need_send_code = False
         self.need_verify_code = False
@@ -102,7 +102,7 @@ class AuthState:
         self.message = 'Клиент авторизован' if message is None else message
         self._log()
 
-    async def delete_session(self):
+    async def delete_session(self) -> None:
         if self.client is not None:
             await ClientConnector.log_out(self.client)
         if self.session_type == 'sqlite':
