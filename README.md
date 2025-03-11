@@ -71,9 +71,7 @@ cd telegram-message-parser
 
 **2) Регистрация приложения Telegram для получения `api_id` и `api_hash`**
 
-Документация по регистрации приложения и получению api_id и api_hash  
-https://core.telegram.org/api/obtaining_api_id#obtaining-api-id
-https://docs.telethon.dev/en/stable/basic/signing-in.html#signing-in
+Документация [Telegram](https://core.telegram.org/api/obtaining_api_id#obtaining-api-id) и документация [Telethon](https://docs.telethon.dev/en/stable/basic/signing-in.html#signing-in) по регистрации приложения и получению api_id и api_hash  
 
 > [!IMPORTANT]  
 > Не рекомендуется использовать основной аккаунт Telegram, лучше использовать другой, чтобы на случай блокировки не потерять доступ к важной информации
