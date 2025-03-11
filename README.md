@@ -140,7 +140,7 @@ PHONE_NUMBER=+79001112233
 pip install -r requirements.txt
 ```
 
-**4) Запуск бота**  
+**4) Запуск приложения**  
 
 - *Linux*
   ```
