@@ -228,7 +228,7 @@ class Components:
         reverse = gr.Checkbox(
             value=False,
             label='reverse',
-            info='Парсить от сегодняшнего сообщения к самому раннему',
+            info='Парсить начиная от самого раннего сообщения',
         )
         parse_args = [limit, offset_date, reverse]
         return parse_args
