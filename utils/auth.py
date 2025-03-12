@@ -26,6 +26,10 @@ class AuthState:
     message: str | None = None
     client: TelegramClient | None = None
 
+    def __post_init__(self):
+        self.session_dir = Path('sessions')
+        self.session_dir.mkdir(exist_ok=True)
+
     def check_start_auth_status(self) -> None:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -40,7 +44,8 @@ class AuthState:
 
     def get_session(self) -> Session:
         if self.session_type == 'sqlite':
-            return SQLiteSession(self.session_name)
+            session_filepath = self.session_dir / self.session_name
+            return SQLiteSession(str(session_filepath))
         elif self.session_type == 'memory':
             if self.memory_session is None:
                 self.memory_session = MemorySession()
@@ -106,7 +111,7 @@ class AuthState:
         if self.client is not None:
             await ClientConnector.log_out(self.client)
         if self.session_type == 'sqlite':
-            session_filepath = Path(f'{self.session_name}.session')
+            session_filepath = self.session_dir / f'{self.session_name}.session'
             if session_filepath.is_file():
                 session_filepath.unlink(missing_ok=True)
         elif self.session_type == 'memory':
@@ -197,10 +202,4 @@ class ClientConnector:
             message = f'Ошибка при верификации облачного пароля, код ошибки: {ex}'
             state.set_auth_failed(message)
         return state
-
-    @staticmethod
-    def delete_all_session_files(path: str = '.') -> None:
-        session_files = list(Path(path).glob('*.session'))
-        for session_file in session_files:
-            session_file.unlink(missing_ok=True)
 

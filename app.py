@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+import utils.setup_logging
 from utils.interface import create_interface
 
 
