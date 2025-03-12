@@ -1,6 +1,5 @@
 
 
----
 # Telegram Message Parser
 
 <div align="center">
