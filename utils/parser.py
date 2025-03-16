@@ -168,6 +168,7 @@ class Parser:
     @classmethod
     def messages_to_csv(cls, message_dicts: Collection[MESSAGE_DICT]) -> Path:
         df = pd.DataFrame.from_dict(message_dicts)
+        df['sender_id'] = df['sender_id'].astype('Int64')
         chat_name = message_dicts[0].get('chat_name', '')
         cvs_path = cls.parse_results_dir / f'telegram_history_{chat_name}.csv'
         df.to_csv(cvs_path, index=False)
